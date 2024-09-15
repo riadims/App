@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dnevnik od <%= zaposleni.ime %> <%= zaposleni.priimek %></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        a.btn {
+            display: inline-block;
+            margin-top: 15px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dnevnik od <%= zaposleni.ime %> <%= zaposleni.priimek %></h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Komentar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% dokumentacija.forEach(function(entry) { %>
+                    <tr>
+                        <td><%= entry.datum.toISOString().split('T')[0] %></td>
+                        <td><%= entry.komentar %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <a href="/journals" class="btn btn-secondary">Nazaj</a>
+    </div>
+</body>
+</html>

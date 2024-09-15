@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izberi dnevnik</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        select.form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        a.btn {
+            display: inline-block;
+            margin-top: 15px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Izberi dnevnik</h1>
+
+        <form action="/journals/view" method="get">
+            <div class="form-group">
+                <label for="id_zaposleni">Izberi zaposlenega:</label>
+                <select name="id_zaposleni" id="id_zaposleni" class="form-control">
+                    <% allZaposleni.forEach(function(zaposleni) { %>
+                        <option value="<%= zaposleni.id_zaposleni %>">
+                            <%= zaposleni.ime %> <%= zaposleni.priimek %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Idi na dnevnik</button>
+            <a href="/">Nazaj</a>
+        </form>
+    </div>
+</body>
+</html>

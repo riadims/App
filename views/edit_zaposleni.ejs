@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uredi zaposlenega</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin: 0 0 20px;
+            font-size: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: text-decoration 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Uredi Podatke o Zaposlenem: <%= zaposleni.ime %> <%= zaposleni.priimek %></h1>
+
+        <form action="/zaposleni/<%= zaposleni.id_zaposleni %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <label for="ime">Ime:</label>
+                <input type="text" id="ime" name="ime" value="<%= zaposleni.ime %>" required>
+            </div>
+            <div class="form-group">
+                <label for="priimek">Priimek:</label>
+                <input type="text" id="priimek" name="priimek" value="<%= zaposleni.priimek %>" required>
+            </div>
+            <div class="form-group">
+                <label for="naslov">Naslov:</label>
+                <input type="text" id="naslov" name="naslov" value="<%= zaposleni.naslov %>" required>
+            </div>
+            <div class="form-group">
+                <label for="telefon">Telefon:</label>
+                <input type="text" id="telefon" name="telefon" value="<%= zaposleni.telefon %>" required>
+            </div>
+            <div class="form-group">
+                <label for="faks">Faks:</label>
+                <input type="text" id="faks" name="faks" value="<%= zaposleni.faks %>" required>
+            </div>
+            <button type="submit">Shrani spremembe</button>
+             <a href="/">Prekliči</a>
+        </form>
+
+
+    </div>
+</body>
+</html>

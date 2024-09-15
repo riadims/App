@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zaposleni dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3, h4 {
+      color: #333;
+      margin: 0 0 20px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 2rem;
+      justify-content: center;
+      align-items: center;
+      
+    }
+
+    h2 {
+      font-size: 1.75rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    h4 {
+      font-size: 1.25rem;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .nepremicnina-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nepremicnina-item {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nepremicnina-item strong {
+      display: inline-block;
+      width: 150px;
+    }
+
+    .nepremicnina-item form {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+
+    .nepremicnina-item form select,
+    .nepremicnina-item form button {
+      margin-top: 10px;
+    }
+
+    .nepremicnina-item button {
+      background-color: #28a745;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      padding: 10px 15px;
+      transition: background-color 0.3s;
+    }
+
+    .nepremicnina-item button:hover {
+      background-color: #218838;
+    }
+
+    .toggle-button {
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+
+    .toggle-content {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .toggle-content.show {
+      display: block;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><%= zaposleni.ime %> <%= zaposleni.priimek %>'s dashboard</h1>
+    <a href="/zaposleni/<%= zaposleni.id_zaposleni %>/edit" class="btn">Uredi Podatke</a>
+    <a href="/" class="btn">Nazaj</a>
+
+    <h2>Seznam Nepremičnin</h2>
+    <ul class="nepremicnina-list">
+      <% nepremicnine.forEach(function(nepremicnina) { %>
+          <li class="nepremicnina-item">
+              <div>
+                <strong>ID:</strong> <%= nepremicnina.id_nepremicnina %> |
+                <strong>Naslov:</strong> <%= nepremicnina.naslov %> |
+                <strong>Status:</strong> <%= nepremicnina.status %>
+              </div>
+              <form action="/nepremicnina/<%= nepremicnina.id_nepremicnina %>/update" method="POST">
+                <label for="status-<%= nepremicnina.id_nepremicnina %>" style="display:none;">Posodobi Status:</label>
+                <select id="status-<%= nepremicnina.id_nepremicnina %>" name="status">
+                    <option value="Na Voljo" <%= nepremicnina.status === 'Na Voljo' ? 'selected' : '' %>>Na Voljo</option>
+                    <option value="Oddana" <%= nepremicnina.status === 'Oddana' ? 'selected' : '' %>>Oddana</option>
+                </select>
+                <button type="submit">Posodobi</button>
+              </form>
+          </li>
+      <% }); %>
+    </ul>
+
+    <h2>Sorodnik:</h2>
+    <ul>
+      <% sorodnik.forEach(s => { %>
+        <li><%= s.ime %> <%= s.priimek %> - <%= s.relacija %></li>
+      <% }) %>
+      <a href="/zaposleni/<%= zaposleni.id_zaposleni %>/sorodnik/edit" class="btn">Uredi Podatke</a>
+    </ul>
+
+    <h2>Ogledi</h2>
+    <ul>
+      <% ogledi.forEach(function(ogled) { %>
+          <li>
+              <strong>Datum:</strong> <%= ogled.datum.toLocaleDateString('en-GB') %> 
+              <strong>Naslov nepremicnine:</strong> <%= ogled.naslov_nepremicnina %> 
+              <strong>Stranka:</strong> <%= ogled.ime_stranka %> <%= ogled.priimek_stranka %> 
+              <strong>Telefon:</strong> <%= ogled.telefon_stranka %> 
+              <button class="toggle-button" onclick="toggleContent('ogled-<%= ogled.id_ogled %>')">+</button>
+              <div id="ogled-<%= ogled.id_ogled %>" class="toggle-content">
+                  <strong>Komentar:</strong> <%= ogled.komentar %>
+              </div>
+          </li> 
+      <% }); %>
+    </ul>
+
+    <h2>Razgovori</h2>
+    <ul>
+      <% razgovori.forEach(function(razgovor) { %>
+        <li>
+            <strong>Datum:</strong> <%= razgovor.datum.toLocaleDateString('en-GB') %> |
+            <strong>Stranka:</strong> <%= razgovor.ime_stranka %> <%= razgovor.priimek_stranka %> 
+            <button class="toggle-button" onclick="toggleContent('razgovor-<%= razgovor.id_razgovor %>')">+</button>
+            <div id="razgovor-<%= razgovor.id_razgovor %>" class="toggle-content">
+                <strong>Komentar:</strong> <%= razgovor.komentar %>
+                <button class="toggle-button" onclick="toggleContent('stranka-<%= razgovor.id_razgovor %>')">Stranka Info</button>
+                <div id="stranka-<%= razgovor.id_razgovor %>" class="toggle-content">
+                    <strong>Ime:</strong> <%= razgovor.ime_stranka %> <br>
+                    <strong>Priimek:</strong> <%= razgovor.priimek_stranka %> <br>
+                    <strong>Telefon:</strong> <%= razgovor.telefon_stranka %> <br>
+                    <strong>Naslov:</strong> <%= razgovor.naslov_stranka %> <br>
+                    <strong>Faks:</strong> <%= razgovor.faks_stranka %> <br>
+                    <strong>Zelen tip nepremicnine:</strong> <%= razgovor.zelentipnepremicnine_stranka %> <br>
+                    <strong>Zelena kvadratura:</strong> <%= razgovor.zelenakvadratura_stranka %> <br>
+                    <strong>Maksimalna mesecna najemnina:</strong> <%= razgovor.maksimalnamesecnanajemnina_stranka %> <br>
+                </div> 
+            </div>
+        </li> 
+      <% }); %>
+    </ul>
+
+    <h2>Pregledi</h2>
+    <ul>
+      <% pregledi.forEach(function(pregled) { %>
+          <li>
+              <strong>Naslov:</strong> <%= pregled.naslov %> |
+              <strong>Datum:</strong> <%= pregled.datum.toLocaleDateString('en-GB') %> 
+              <button class="toggle-button" onclick="toggleContent('<%= pregled.id_pregled %>')">+</button>
+              <div id="<%= pregled.id_pregled %>" class="toggle-content">
+                  <strong>Komentar:</strong> <%= pregled.komentar %>
+              </div>
+          </li>
+      <% }); %>
+    </ul>
+
+    <h3>Dodaj Nov Pregled</h3>
+    <form action="/zaposleni/<%= zaposleni.id_zaposleni %>/pregled" method="POST">
+        <div class="form-group">
+            <label for="nepremicnina">Nepremičnina:</label>
+            <select id="nepremicnina" name="id_nepremicnina" class="form-control">
+                <% nepremicnine.forEach(function(nepremicnina) { %>
+                    <option value="<%= nepremicnina.id_nepremicnina %>"><%= nepremicnina.naslov %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="datum">Datum:</label>
+            <input type="date" id="datum" name="datum" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="komentar">Komentar:</label>
+            <textarea id="komentar" name="komentar" rows="2" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn">Dodaj Pregled</button>
+    </form>
+
+    <h3>Dodaj Nov Razgovor</h3>
+    <form action="/zaposleni/<%= zaposleni.id_zaposleni %>/razgovor" method="POST">
+        <div class="form-group">
+            <label for="stranka">Izberite Stranko:</label>
+            <select id="stranka" name="id_stranka" class="form-control">
+                <% stranke.forEach(function(stranka) { %>
+                    <option value="<%= stranka.id_stranka %>"><%= stranka.ime %> <%= stranka.priimek %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="datum">Datum:</label>
+            <input type="date" id="datum" name="datum" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="komentar">Komentar:</label>
+            <textarea id="komentar" name="komentar" rows="2" class="form-control" required></textarea>
+        </div>
+        <h4>Nova stranka:</h4>
+        <div class="form-group">
+            <label for="ime_novo">Ime:</label>
+            <input type="text" id="ime_novo" name="ime_novo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="priimek_novo">Priimek:</label>
+            <input type="text" id="priimek_novo" name="priimek_novo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="telefon_novo">Telefon:</label>
+            <input type="text" id="telefon_novo" name="telefon_novo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="naslov_novo">Naslov:</label>
+            <input type="text" id="naslov_novo" name="naslov_novo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="faks_novo">Faks:</label>
+            <input type="text" id="faks_novo" name="faks_novo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="zelentipnepremicnine_novo">Zelen tip nepremicnine:</label>
+            <input type="text" id="zelentipnepremicnine_novo" name="zelentipnepremicnine_novo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="zelenakvadratura_novo">Zelena kvadratura:</label>
+            <input type="text" id="zelenakvadratura_novo" name="zelenakvadratura_novo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="maksimalnamesecnanajemnina_novo">Maksimalna mesecna najemnina:</label>
+            <input type="text" id="maksimalnamesecnanajemnina_novo" name="maksimalnamesecnanajemnina_novo" class="form-control">
+        </div>
+        <button type="submit" class="btn">Dodaj Razgovor</button>
+    </form>
+
+    <h3>Dodaj Nov Ogled</h3>
+    <form action="/zaposleni/<%= zaposleni.id_zaposleni %>/ogled" method="POST">
+        <div class="form-group">
+            <label for="stranka">Izberite Stranko:</label>
+            <select id="stranka" name="id_stranka" class="form-control" required>
+                <% stranke.forEach(function(stranka) { %>
+                    <option value="<%= stranka.id_stranka %>"><%= stranka.ime %> <%= stranka.priimek %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="nepremicnina">Izberite Nepremičnino:</label>
+            <select id="nepremicnina" name="id_nepremicnina" class="form-control" required>
+                <% nepremicnine.forEach(function(nepremicnina) { %>
+                    <option value="<%= nepremicnina.id_nepremicnina %>"><%= nepremicnina.naslov %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="datum">Datum:</label>
+            <input type="date" id="datum" name="datum" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="komentar">Komentar:</label>
+            <textarea id="komentar" name="komentar" rows="2" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn">Dodaj Ogled</button>
+    </form>
+
+    <h2>Dnevnik</h2>
+    <form action="/zaposleni/<%= zaposleni.id_zaposleni %>/add-journal" method="POST" class="mb-3">
+        <div class="form-group">
+            <label for="komentar">Dodaj zapis v dnevnik</label>
+            <textarea class="form-control" id="komentar" name="komentar" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn">Dodaj v dnevnik</button>
+    </form>
+  </div>
+
+  <script>
+    function toggleContent(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.classList.toggle('show');
+      }
+    }
+  </script>
+</body>
+</html>
